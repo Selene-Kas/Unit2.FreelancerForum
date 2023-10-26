@@ -1,76 +1,68 @@
-const div = document.querySelector("div");
-div.style.backgroundColor = "lightGray";
-const title1 = document.createElement("h1");
-title1.textContent = "Freelancer Forum", "Available Freelancers";
-title1.style.textAlign = "center";
-const title2 = document.createElement("h2");
-title2.textContent = "Available Freelancers";
-title2.style.textAlign = "center";
-div.append(title1, title2);
-
-let myTable = document.querySelector('#table');
-/* State */
-// Here, we define variables for the data that our program needs to remember.
-// We call this data "state" because it represents the state of our program.
-const maxFreelancers = 10;
+//initial array of freelancers
 const freelancers = [
-    { name: "Dr. Slice", price: 25, occupation: "gardener" },
-    { name: "Prof. Possibility", price: 43, occupation: "driver" },
-    { name: "Prof. Prism", price: 81, occupation: "teacher" },
-    { name: "Prof. Spark", price: 76, occupation: "programmer" },
-  ];
+  { name: "Harry", occupation: "Writer", price: 45 },
+  { name: "Hermione", occupation: "Teacher", price: 50 },
+  { name: "Ron", occupation: "Programmer", price: 70 },
+];
+const maxFreelancers = 10;
 
-const names = ["Prof. Snape", "Dr. Dumbledore", "Prof. Mcgonagall", "Dr. Hagrid"];
-const prices = [43, 51, 76, 47];
-const occupations = ["teacher", "programer", "driver", "gardener"];
-
-console.table(freelancers);
-
-let headers = ['Name', 'Price', 'Occupation'];
+//possible names and occupations
+const names = ["Snape", "Dumbledore", "Voldemort", "Hagrid"];
+const prices = [60, 55, 72];
+const occupations = ["Teacher", "Programer", "Driver", "Gardener"];
 
 const addFreelancerIntervalId = setInterval(addFreelancer, 1000);
 render();
 
+
+//a function to render the initial freelancer data
 function render() {
-let table = document.createElement('table');
-let headerRow = document.createElement('tr');
-
-headers.map(headerText => {
-    let header = document.createElement('th');
-    let textNode =document.createTextNode(headerText);
-    header.appendChild(textNode);
-    headerRow.appendChild(header);
-});
-table.appendChild(headerRow);
-
-freelancers.map(free => {
-    let row = document.createElement('tr');
-
-    Object.values(free).map(text => {
-        let cell = document.createElement('td');
-        let textNode = document.createTextNode(text);
-        cell.appendChild(textNode);
-        row.appendChild(cell);
-    })
-    table.appendChild(row);
-});
-
-myTable.appendChild(table);
+  // Render the freelancers
+  const freeTable = document.querySelector("tbody");
+  const freelancersTemplate = freelancers.map((freelancer) => {
+    const tr = document.createElement("tr");
+    const td1 = document.createElement("td");
+    td1.textContent = freelancer.name;
+    td1.style.textAlign = "center";
+    const td2 = document.createElement("td");
+    td2.textContent = freelancer.occupation;
+    td2.style.textAlign = "center";
+    const td3 = document.createElement("td");
+    td3.textContent = `$${freelancer.price}`;
+    td3.style.textAlign = "center";
+    tr.append(td1, td2, td3);
+    return tr;
+  });
+  freeTable.replaceChildren(...freelancersTemplate);
 }
 
-//Add a random freelancer to the freelancers array
-function addFreelancer() {
-   const name = names[Math.floor(Math.random() * names.length)]
-   const price = prices[Math.floor(Math.random() * prices.length)]
-   const occupation = occupations[Math.floor(Math.random() * occupations.length)]
-   freelancers.push({name, price, occupation});
-   render();
-
-     // TODO: Stop adding freelancers if we've reached the maximum number of freelancers
-  if (freelancers.length >= maxFreelancers) {
-    clearInterval(addFreelancerIntervalId);
+//a function to calculate the average starting price of your freelancers' array
+function getAverage(freelancers) {
+    const initialValue = 0;
+    const priceAverage = freelancers.reduce(
+      (acc, item) => acc + item.price, 
+      initialValue
+    );
+    return priceAverage/(freelancers.length);
   }
-  }
+  const body = document.querySelector("#average-price");
+  const phrase = document.createElement("p");
+  phrase.textContent = `The average starting price is $${getAverage(freelancers)}.`;
+  phrase.style.textAlign = "center";
+  body.append(phrase);
 
+  //a function to generate a new random freelancer
+  function addFreelancer() {
+    const name = names[Math.floor(Math.random() * names.length)]
+    const occupation = occupations[Math.floor(Math.random() * occupations.length)]
+    const price = prices[Math.floor(Math.random() * prices.length)]
+    freelancers.push({name, occupation, price});
+    render();
+ 
+      // TODO: Stop adding freelancers if we've reached the maximum number of freelancers
+   if (freelancers.length === maxFreelancers) {
+     clearInterval(addFreelancerIntervalId);
+   }
+   }
 
-
+   console.log(freelancers);
