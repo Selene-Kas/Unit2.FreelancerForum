@@ -12,7 +12,10 @@ p {
     margin-right: auto;
 }
 body {
+    height: 425px;
+    width: 400px;
     background-color: lightgray;
     border: 2px solid black;
-    margin: 10px 150px 0px 150px;
+    margin: 50px 100px 0px 150px;
 }
+
